@@ -27,6 +27,8 @@ parser.add_argument('--draw-bbox', action='store_true', help='draw collision det
 parser.add_argument('--domain-rand', action='store_true', help='enable domain randomization')
 parser.add_argument('--frame-skip', default=1, type=int, help='number of frames to skip')
 parser.add_argument('--seed', default=1, type=int, help='seed')
+parser.add_argument('--linearspeed', default=0.44, type=float, help='seed')
+parser.add_argument('--bend', default=0.35, type=float, help='seed')
 args = parser.parse_args()
 
 if args.env_name and args.env_name.find('Duckietown') != -1:
@@ -80,15 +82,17 @@ def update(dt):
     """
 
     action = np.array([0.0, 0.0])
+    bend=args.bend
+    lspeed=args.linearspeed
 
     if key_handler[key.UP]:
-        action = np.array([0.44, 0.0])
+        action = np.array([lspeed, 0.0])
     if key_handler[key.DOWN]:
-        action = np.array([-0.44, 0])
+        action = np.array([-lspeed, 0])
     if key_handler[key.LEFT]:
-        action = np.array([0.35, +1])
+        action = np.array([lspeed*0.8, +bend])
     if key_handler[key.RIGHT]:
-        action = np.array([0.35, -1])
+        action = np.array([lspeed*0.8, -bend])
     if key_handler[key.SPACE]:
         action = np.array([0, 0])
 
