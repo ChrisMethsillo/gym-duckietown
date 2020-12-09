@@ -27,8 +27,8 @@ parser.add_argument('--draw-bbox', action='store_true', help='draw collision det
 parser.add_argument('--domain-rand', action='store_true', help='enable domain randomization')
 parser.add_argument('--frame-skip', default=1, type=int, help='number of frames to skip')
 parser.add_argument('--seed', default=1, type=int, help='seed')
-parser.add_argument('--linearspeed', default=0.44, type=float, help='seed')
-parser.add_argument('--bend', default=0.35, type=float, help='seed')
+parser.add_argument('--linearspeed', default=0.44, type=float, help='linear speed')
+parser.add_argument('--bend', default=0.35, type=float, help='bend')
 args = parser.parse_args()
 
 if args.env_name and args.env_name.find('Duckietown') != -1:
@@ -76,12 +76,9 @@ key_handler = key.KeyStateHandler()
 env.unwrapped.window.push_handlers(key_handler)
 
 def update(dt):
-    """
-    This function is called at every frame to handle
-    movement/stepping and redrawing
-    """
-
+  
     action = np.array([0.0, 0.0])
+    
     bend=args.bend
     lspeed=args.linearspeed
 
