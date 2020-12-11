@@ -21,25 +21,26 @@ from gym_duckietown.wrappers import UndistortWrapper
 parser = argparse.ArgumentParser()
 parser.add_argument('--env-name', default=None)
 parser.add_argument('--map-name', default='udem1')
-parser.add_argument('--distortion', default=False, action='store_true')
-parser.add_argument('--draw-curve', action='store_true', help='draw the lane following curve')
-parser.add_argument('--draw-bbox', action='store_true', help='draw collision detection bounding boxes')
+parser.add_argument('--distortion', default=0, type=int, help="Activate eye fish distortion")
+parser.add_argument('--draw-curve', default=0, type=int, help='draw the lane following curve')
+parser.add_argument('--draw-bbox', default=0, type=int, help='draw collision detection bounding boxes')
 parser.add_argument('--domain-rand', action='store_true', help='enable domain randomization')
 parser.add_argument('--frame-skip', default=1, type=int, help='number of frames to skip')
 parser.add_argument('--seed', default=1, type=int, help='seed')
 parser.add_argument('--linearspeed', default=0.44, type=float, help='linear speed')
 parser.add_argument('--bend', default=0.35, type=float, help='bend')
+parser.add_argument('--camera', default='human', type=str, help='Camera position')
 args = parser.parse_args()
 
 if args.env_name and args.env_name.find('Duckietown') != -1:
     env = DuckietownEnv(
         seed = args.seed,
         map_name = args.map_name,
-        draw_curve = args.draw_curve,
-        draw_bbox = args.draw_bbox,
+        draw_curve = bool(args.draw_curve),
+        draw_bbox = bool(args.draw_bbox),
         domain_rand = args.domain_rand,
         frame_skip = args.frame_skip,
-        distortion = args.distortion,
+        distortion = bool(args.distortion),
     )
 else:
     env = gym.make(args.env_name)
@@ -110,8 +111,8 @@ def update(dt):
         print('done!')
         env.reset()
         env.render()
-
-    env.render()
+    camera=args.camera
+    env.render(camera)
 
 pyglet.clock.schedule_interval(update, 1.0 / env.unwrapped.frame_rate)
 
