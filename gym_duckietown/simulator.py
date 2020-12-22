@@ -158,6 +158,7 @@ class Simulator(gym.Env):
             seed=None,
             distortion=False,
             randomize_maps_on_reset=False,
+            
     ):
         """
 
@@ -202,6 +203,8 @@ class Simulator(gym.Env):
 
         # Flag to draw bounding boxes
         self.draw_bbox = draw_bbox
+
+        self.camera_model=None
 
         # Flag to enable/disable domain randomization
         self.domain_rand = domain_rand
